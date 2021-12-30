@@ -5,15 +5,15 @@ provider "google" {
 }
 
 provider "google-beta" {
-  version     = "~> 3.73.0"
+  #version     = "~> 3.73.0"
   project     = var.project
   region      = var.region
 }
 
 terraform {
   backend "gcs" {
-    bucket  = "etcd-io-infrastructure"
-    prefix  = "terraform/terraform.state"
+    bucket  = "rom-test-bucket"
+    #prefix  = "terraform/terraform.state"
   }
 }
 
