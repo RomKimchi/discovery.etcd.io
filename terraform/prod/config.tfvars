@@ -1,7 +1,7 @@
 environment = "prod"
 
 # gcp values
-project = "etcd-io"
+project = "exam-336507"
 region = "us-central1"
 network_prefix = "10.128"
 
