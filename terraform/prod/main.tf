@@ -13,15 +13,15 @@ provider "google-beta" {
 terraform {
   backend "gcs" {
     bucket  = "rom-test-bucket"
-    #prefix  = "terraform/terraform.state"
+    prefix  = "terraform/terraform.state"
   }
 }
 
 module "gke" {
   source = "git::https://git@github.com/cloudkite-io/terraform-modules.git//modules/gcp/gke?ref=v0.0.4"
   environment = var.environment
-  gke_pods_secondary_range_name = module.vpc.gke_subnetwork_secondary_range_name_services
-  gke_services_secondary_range_name = module.vpc.gke_subnetwork_secondary_range_name_pods
+  gke_pods_secondary_range_name = module.vpc.gke_subnetwork_secondary_range_name_pods
+  gke_services_secondary_range_name = module.vpc.gke_subnetwork_secondary_range_name_services
   gke_master_authorized_networks = var.gke_master_authorized_networks
   location = var.location
   master_ipv4_cidr_block = var.master_ipv4_cidr_block
@@ -29,7 +29,7 @@ module "gke" {
   project = var.project
   region = var.region
   subnetwork = module.vpc.gke_subnetwork
-
+  
   gke_nodepools = [
     {
       auto_repair = true
@@ -52,11 +52,13 @@ module "vpc" {
   region = var.region
 }
 
-module "velero" {
-  source = "git::https://git@github.com/cloudkite-io/terraform-modules.git//modules/gcp/velero?ref=v0.0.4"
+### no backups needed ###
 
-  backups_bucket_location = "US"
-  backups_bucket_name = "${var.project}-backups"
-  project = var.project
-  service_account_name = "${module.gke.name}-velero-sa"
-}
+# module "velero" {
+#   source = "git::https://git@github.com/cloudkite-io/terraform-modules.git//modules/gcp/velero?ref=v0.0.4"
+
+#   backups_bucket_location = "US"
+#   backups_bucket_name = "${var.project}-backups"
+#   project = var.project
+#   service_account_name = "${module.gke.name}-velero-sa"
+# }
